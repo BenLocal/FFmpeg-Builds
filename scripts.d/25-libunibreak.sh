@@ -8,9 +8,9 @@ ffbuild_enabled() {
 }
 
 ffbuild_dockerbuild() {
-    git-mini-clone "$UNIBREAK_REPO" "$UNIBREAK_COMMIT" unibreak
-    cd unibreak
-    
+    git-mini-clone "$UNIBREAK_REPO" "$UNIBREAK_COMMIT" libunibreak
+    cd libunibreak
+
     local myconf=(
         --prefix="$FFBUILD_PREFIX"
         --disable-shared
