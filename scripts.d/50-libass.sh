@@ -20,6 +20,7 @@ ffbuild_dockerbuild() {
         --prefix="$FFBUILD_PREFIX"
         --disable-shared
         --enable-static
+        --enable_libunibreak
         --with-pic
     )
 
