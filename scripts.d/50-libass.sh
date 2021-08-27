@@ -1,14 +1,17 @@
 #!/bin/bash
 
-ASS_REPO="https://github.com/libass/libass.git"
-ASS_COMMIT="a8456e673c473a081febb4c2da5ba90457574c6d"
+#ASS_REPO="https://github.com/libass/libass.git"
+#ASS_COMMIT="a8456e673c473a081febb4c2da5ba90457574c6d"
+ASS_REPO="https://github.com/TheOneric/libass.git"
+ASS_BRANCH= "unibreak"
+
 
 ffbuild_enabled() {
     return 0
 }
 
 ffbuild_dockerbuild() {
-    git-mini-clone "$ASS_REPO" "$ASS_COMMIT" ass
+    git clone --branch "$ASS_BRANCH" "$ASS_REPO" ass
     cd ass
 
     ./autogen.sh
