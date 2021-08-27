@@ -11,6 +11,8 @@ ffbuild_dockerbuild() {
     git-mini-clone "$UNIBREAK_REPO" "$UNIBREAK_COMMIT" libunibreak
     cd libunibreak
 
+    ./autogen.sh
+    
     local myconf=(
         --prefix="$FFBUILD_PREFIX"
         --disable-shared
