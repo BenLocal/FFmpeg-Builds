@@ -3,22 +3,22 @@ name: Build FFmpeg
 on:
   push:
     paths-ignore:
-      - '**.md'
-      - 'LICENSE'
+      - "**.md"
+      - "LICENSE"
   workflow_dispatch:
     inputs:
       doRelease:
-        description: 'Publish new release'
+        description: "Publish new release"
         type: boolean
         default: false
         required: false
       buildOnly:
-        description: 'Only build ffmpeg'
+        description: "Only build ffmpeg"
         type: boolean
         default: false
         required: false
   schedule:
-    - cron: '0 12 * * *'
+    - cron: "0 12 * * *"
 
 env:
   DOCKER_BUILDKIT: 1
@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest,ubuntu-24.04-arm]
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Free Disk-Space
@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win64,winarm64,linux64,linuxarm64]
+        target: [win64, winarm64, linux64, linuxarm64]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
@@ -187,8 +187,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win64,winarm64,linux64,linuxarm64]
-        variant: [gpl,lgpl,gpl 6.1,gpl 7.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 6.1,lgpl-shared 7.1]
+        target: [win64, winarm64, linux64, linuxarm64]
+        variant:
+          [
+            gpl,
+            lgpl,
+            gpl 6.1,
+            gpl 7.1,
+            lgpl 6.1,
+            lgpl 7.1,
+            gpl-shared,
+            lgpl-shared,
+            gpl-shared 6.1,
+            gpl-shared 7.1,
+            lgpl-shared 6.1,
+            lgpl-shared 7.1,
+          ]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
@@ -252,8 +266,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [win64,winarm64,linux64,linuxarm64]
-        variant: [gpl,lgpl,gpl 6.1,gpl 7.1,lgpl 6.1,lgpl 7.1,gpl-shared,lgpl-shared,gpl-shared 6.1,gpl-shared 7.1,lgpl-shared 6.1,lgpl-shared 7.1]
+        target: [win64, winarm64, linux64, linuxarm64]
+        variant:
+          [
+            gpl,
+            lgpl,
+            gpl 6.1,
+            gpl 7.1,
+            lgpl 6.1,
+            lgpl 7.1,
+            gpl-shared,
+            lgpl-shared,
+            gpl-shared 6.1,
+            gpl-shared 7.1,
+            lgpl-shared 6.1,
+            lgpl-shared 7.1,
+          ]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
@@ -269,6 +297,8 @@ jobs:
         run: |
           T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
           ./build.sh ${{ matrix.target }} ${{ matrix.variant }}
+        env:
+          FFMPEG_REPO: https://github.com/nyanmisaka/ffmpeg-rockchip.git
       - name: Replace spaces in string
         id: strs
         run: |
