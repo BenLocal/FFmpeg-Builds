@@ -38,7 +38,8 @@ ffbuild_dockerbuild() {
 }
 
 ffbuild_configure() {
-    echo --enable-libdvdnav
+    # echo --enable-libdvdnav
+    return 0
 }
 
 ffbuild_unconfigure() {
