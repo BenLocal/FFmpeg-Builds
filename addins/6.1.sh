@@ -1,2 +1,2 @@
 #!/bin/bash
-GIT_BRANCH="release/6.1"
+GIT_BRANCH="6.1"
