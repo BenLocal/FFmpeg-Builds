@@ -43,10 +43,11 @@ ffbuild_configure() {
 }
 
 ffbuild_unconfigure() {
-    [[ $ADDINS_STR == *4.4* ]] && return 0
-    [[ $ADDINS_STR == *5.0* ]] && return 0
-    [[ $ADDINS_STR == *5.1* ]] && return 0
-    [[ $ADDINS_STR == *6.0* ]] && return 0
-    [[ $ADDINS_STR == *6.1* ]] && return 0
-    echo --disable-libdvdnav
+    # [[ $ADDINS_STR == *4.4* ]] && return 0
+    # [[ $ADDINS_STR == *5.0* ]] && return 0
+    # [[ $ADDINS_STR == *5.1* ]] && return 0
+    # [[ $ADDINS_STR == *6.0* ]] && return 0
+    # [[ $ADDINS_STR == *6.1* ]] && return 0
+    # echo --disable-libdvdnav
+    return 0
 }
