@@ -33,10 +33,12 @@ ffbuild_dockerbuild() {
 }
 
 ffbuild_configure() {
-    echo --enable-libvvenc
+    # echo --enable-libvvenc
+    return 0
 }
 
 ffbuild_unconfigure() {
-    (( $(ffbuild_ffver) > 700 )) || return 0
-    echo --disable-libvvenc
+    # (( $(ffbuild_ffver) > 700 )) || return 0
+    # echo --disable-libvvenc
+    return 0
 }
