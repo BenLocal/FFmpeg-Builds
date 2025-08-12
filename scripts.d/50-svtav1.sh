@@ -22,9 +22,11 @@ ffbuild_dockerbuild() {
 }
 
 ffbuild_configure() {
-    echo --enable-libsvtav1
+    # echo --enable-libsvtav1
+    return 0
 }
 
 ffbuild_unconfigure() {
-    echo --disable-libsvtav1
+    # echo --disable-libsvtav1
+    return 0
 }
