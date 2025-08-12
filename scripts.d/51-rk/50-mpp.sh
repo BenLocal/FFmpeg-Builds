@@ -14,7 +14,7 @@ ffbuild_dockerdl() {
 ffbuild_dockerbuild() {
     mkdir build && cd build
     cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_PREFIX="$FFBUILD_PREFIX" \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=ON \
         -DBUILD_TEST=OFF
