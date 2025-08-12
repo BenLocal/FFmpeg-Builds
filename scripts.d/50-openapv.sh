@@ -40,7 +40,8 @@ ffbuild_dockerbuild() {
 }
 
 ffbuild_configure() {
-    echo --enable-liboapv
+    # echo --enable-liboapv
+    return 0
 }
 
 ffbuild_unconfigure() {
