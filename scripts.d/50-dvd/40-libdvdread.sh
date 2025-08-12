@@ -4,13 +4,14 @@ SCRIPT_REPO="https://code.videolan.org/videolan/libdvdread.git"
 SCRIPT_COMMIT="786e73584b46393fbea4abdb4a25920cde82b9ec"
 
 ffbuild_enabled() {
-    [[ $VARIANT == lgpl* ]] && return -1
-    [[ $ADDINS_STR == *4.4* ]] && return -1
-    [[ $ADDINS_STR == *5.0* ]] && return -1
-    [[ $ADDINS_STR == *5.1* ]] && return -1
-    [[ $ADDINS_STR == *6.0* ]] && return -1
-    [[ $ADDINS_STR == *6.1* ]] && return -1
-    return 0
+    # [[ $VARIANT == lgpl* ]] && return -1
+    # [[ $ADDINS_STR == *4.4* ]] && return -1
+    # [[ $ADDINS_STR == *5.0* ]] && return -1
+    # [[ $ADDINS_STR == *5.1* ]] && return -1
+    # [[ $ADDINS_STR == *6.0* ]] && return -1
+    # [[ $ADDINS_STR == *6.1* ]] && return -1
+    # return 0
+    return -1
 }
 
 ffbuild_dockerbuild() {
