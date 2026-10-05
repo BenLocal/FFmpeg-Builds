@@ -42,7 +42,12 @@ ffbuild_dockerbuild() {
     make -j$(nproc)
     make install DESTDIR="$FFBUILD_DESTDIR"
 
+    # OpenAPV 0.3 installs the static archive in a subdirectory.
+    if [[ -f "$FFBUILD_DESTPREFIX/lib/oapv/liboapv.a" ]]; then
+        mv "$FFBUILD_DESTPREFIX/lib/oapv/liboapv.a" "$FFBUILD_DESTPREFIX/lib/"
+    fi
     rm -rf "$FFBUILD_DESTPREFIX"/{bin,lib/oapv,lib/import,include/oapv/oapv_exports.h,lib/liboapv.so*}
+    test -s "$FFBUILD_DESTPREFIX/lib/liboapv.a"
 
     {
         echo "Libs.private: -lm"
