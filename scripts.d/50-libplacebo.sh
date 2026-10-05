@@ -29,6 +29,8 @@ ffbuild_dockerbuild() {
     if [[ $ADDINS_STR == *6.1-rk* ]]; then
         cd libplacebo2
         sed -i 's/DPL_EXPORT/DPL_STATIC/' src/meson.build
+        # Python 3.14 requires an Element rather than a nested ElementTree.
+        sed -i 's/VkXML(ET.parse(xmlfile))/VkXML(ET.parse(xmlfile).getroot())/' src/vulkan/utils_gen.py
     else
         cd libplacebo
     fi
