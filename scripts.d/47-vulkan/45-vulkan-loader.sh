@@ -7,6 +7,9 @@ SCRIPT_REPO2="https://github.com/KhronosGroup/Vulkan-Headers.git"
 SCRIPT_COMMIT2="v1.4.363"
 SCRIPT_TAGFILTER2="v?.*.*"
 
+SCRIPT_REPO3="$SCRIPT_REPO2"
+SCRIPT_COMMIT3="v1.3.276"
+
 ffbuild_enabled() {
     (( $(ffbuild_ffver) > 404 )) || return -1
     return 0
@@ -15,9 +18,15 @@ ffbuild_enabled() {
 ffbuild_dockerdl() {
     default_dl .
     echo "git-mini-clone \"$SCRIPT_REPO2\" \"$SCRIPT_COMMIT2\" Vulkan-Headers"
+    echo "git-mini-clone \"$SCRIPT_REPO3\" \"$SCRIPT_COMMIT3\" Vulkan-Headers2"
 }
 
 ffbuild_dockerbuild() {
+    if [[ $ADDINS_STR == *6.1-rk* ]]; then
+        mv Vulkan-Headers Vulkan-Headers-current
+        mv Vulkan-Headers2 Vulkan-Headers
+    fi
+
     mkdir build && cd build
 
     cmake -DCMAKE_TOOLCHAIN_FILE="$FFBUILD_CMAKE_TOOLCHAIN" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$FFBUILD_PREFIX" \

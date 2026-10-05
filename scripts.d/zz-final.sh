@@ -57,6 +57,8 @@ ffbuild_depends() {
     echo openjpeg
     echo openmpt
     echo rav1e
+    echo rkmpp
+    echo rkrga
     echo rubberband
     echo rustdedup
     echo schannel

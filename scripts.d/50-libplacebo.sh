@@ -3,6 +3,9 @@
 SCRIPT_REPO="https://code.videolan.org/videolan/libplacebo.git"
 SCRIPT_COMMIT="1937beef3a2f508266c68efea1491e3fc4600e04"
 
+SCRIPT_REPO2="$SCRIPT_REPO"
+SCRIPT_COMMIT2="2bd627f823ba1cedbc51a0ee6eb7a9fb433d912e"
+
 ffbuild_depends() {
     echo base
     echo vulkan
@@ -16,11 +19,20 @@ ffbuild_enabled() {
 }
 
 ffbuild_dockerdl() {
-    default_dl .
-    echo "git submodule update --init --recursive --depth=1 --filter=blob:none"
+    default_dl libplacebo
+    echo "cd libplacebo && git submodule update --init --recursive --depth=1 --filter=blob:none && cd .."
+    echo "git-mini-clone \"$SCRIPT_REPO2\" \"$SCRIPT_COMMIT2\" libplacebo2"
+    echo "cd libplacebo2 && git submodule update --init --recursive --depth=1 --filter=blob:none && cd .."
 }
 
 ffbuild_dockerbuild() {
+    if [[ $ADDINS_STR == *6.1-rk* ]]; then
+        cd libplacebo2
+        sed -i 's/DPL_EXPORT/DPL_STATIC/' src/meson.build
+    else
+        cd libplacebo
+    fi
+
     mkdir build && cd build
 
     local myconf=(
