@@ -298,14 +298,17 @@ jobs:
             for BIN in ffmpeg ffprobe; do
               readelf -d "$ROOT/bin/$BIN" | grep -F '$ORIGIN/../lib'
             done
+            OBJECTS=("$ROOT/bin/ffmpeg")
             if [[ "${{ matrix.variant }}" == *shared* ]]; then
-              CODEC="$ROOT/lib/libavcodec.so"
-            else
-              CODEC="$ROOT/bin/ffmpeg"
+              OBJECTS=("$ROOT"/lib/libav*.so "$ROOT"/lib/libsw*.so)
             fi
-            readelf -d "$CODEC" | grep -F '$ORIGIN/../lib'
-            readelf -d "$CODEC" | grep 'NEEDED.*librockchip_mpp'
-            readelf -d "$CODEC" | grep 'NEEDED.*librga'
+            > "$CHECK_DIR/dependencies.txt"
+            for OBJECT in "${OBJECTS[@]}"; do
+              readelf -d "$OBJECT" | grep -F '$ORIGIN/../lib'
+              readelf -d "$OBJECT" >> "$CHECK_DIR/dependencies.txt"
+            done
+            grep 'NEEDED.*librockchip_mpp' "$CHECK_DIR/dependencies.txt"
+            grep 'NEEDED.*librga' "$CHECK_DIR/dependencies.txt"
             echo "Verified MPP/RGA libraries in $ARCHIVE"
           done
       - name: Replace spaces in string

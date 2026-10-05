@@ -27,15 +27,15 @@ GIT_BRANCH="${GIT_BRANCH_OVERRIDE:-$GIT_BRANCH}"
 BUILD_SCRIPT="$(mktemp)"
 trap "rm -f -- '$BUILD_SCRIPT'" EXIT
 
-RPATH_LDFLAGS=''
+RPATH_LDSOFLAGS=''
 RPATH_LDEXEFLAGS=''
 if [[ $TARGET == linux* && ( $VARIANT == *shared* || $ADDINS_STR == *-rk* ) ]]; then
     RPATH_LDEXEFLAGS=' -Wl,-rpath,\\\$\$ORIGIN/../lib'
 fi
 
-if [[ $TARGET == linuxarm64 && $ADDINS_STR == *-rk* ]]; then
-    # Each shared FFmpeg library also needs to resolve the bundled MPP/RGA libs.
-    RPATH_LDFLAGS="$RPATH_LDEXEFLAGS"
+if [[ $TARGET == linuxarm64 && $VARIANT == *shared* && $ADDINS_STR == *-rk* ]]; then
+    # Shared library rules expand these flags through make's eval once more.
+    RPATH_LDSOFLAGS=' -Wl,-rpath,\\\$\$\$\$ORIGIN/../lib'
 fi
 
 cat <<EOF >"$BUILD_SCRIPT"
@@ -48,7 +48,7 @@ cat <<EOF >"$BUILD_SCRIPT"
 
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
         --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
-        --extra-ldflags="\$FF_LDFLAGS"'$RPATH_LDFLAGS' --extra-ldexeflags="\$FF_LDEXEFLAGS"'$RPATH_LDEXEFLAGS' \
+        --extra-ldflags="\$FF_LDFLAGS" --extra-ldsoflags='$RPATH_LDSOFLAGS' --extra-ldexeflags="\$FF_LDEXEFLAGS"'$RPATH_LDEXEFLAGS' \
         --cc="\$CC" --cxx="\$CXX" --ar="\$AR" --ranlib="\$RANLIB" --nm="\$NM" \
         --extra-version="\$(date +%Y%m%d)" || { cat ffbuild/config.log; exit 1; }
     make -j\$(nproc) V=1
