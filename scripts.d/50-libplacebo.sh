@@ -26,8 +26,11 @@ ffbuild_dockerdl() {
 }
 
 ffbuild_dockerbuild() {
+    local vk_proc_addr=enabled
     if [[ $ADDINS_STR == *6.1-rk* ]]; then
         cd libplacebo2
+        # FFmpeg 6.1 supplies Vulkan proc addresses at runtime.
+        vk_proc_addr=disabled
         sed -i 's/DPL_EXPORT/DPL_STATIC/' src/meson.build
         # Python 3.14 requires an Element rather than a nested ElementTree.
         sed -i 's/VkXML(ET.parse(xmlfile))/VkXML(ET.parse(xmlfile).getroot())/' src/vulkan/utils_gen.py
@@ -42,7 +45,7 @@ ffbuild_dockerbuild() {
         --buildtype=release
         --default-library=static
         -Dvulkan=enabled
-        -Dvk-proc-addr=enabled
+        -Dvk-proc-addr="$vk_proc_addr"
         -Dvulkan-registry="$FFBUILD_PREFIX"/share/vulkan/registry/vk.xml
         -Dshaderc=enabled
         -Dglslang=disabled

@@ -3,17 +3,29 @@
 SCRIPT_REPO="https://github.com/AcademySoftwareFoundation/openapv.git"
 SCRIPT_COMMIT="a58ce739be0dfb083643d929aee8f0e0ba9bdf63"
 
+SCRIPT_REPO2="$SCRIPT_REPO"
+SCRIPT_COMMIT2="v0.3.0.0"
+
 ffbuild_enabled() {
     (( $(ffbuild_ffver) > 701 )) || return -1
     return 0
 }
 
 ffbuild_dockerdl() {
-    default_dl .
-    echo "git fetch --unshallow --filter=blob:none"
+    default_dl OpenAPV
+    echo "cd OpenAPV && git fetch --unshallow --filter=blob:none && cd .."
+    echo "git-mini-clone \"$SCRIPT_REPO2\" \"$SCRIPT_COMMIT2\" OpenAPV8.1"
+    echo "cd OpenAPV8.1 && git fetch --unshallow --filter=blob:none && cd .."
 }
 
 ffbuild_dockerbuild() {
+    if [[ $ADDINS_STR == *8.1-rk* ]]; then
+        # Rockchip 8.1 uses the metadata API from OpenAPV 0.3.
+        cd OpenAPV8.1
+    else
+        cd OpenAPV
+    fi
+
     # No need to build this
     echo > app/CMakeLists.txt
 
