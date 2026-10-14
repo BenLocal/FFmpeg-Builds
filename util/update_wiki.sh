@@ -16,7 +16,11 @@ TAGNAME="$2"
 
 WIKIPATH="tmp_wiki"
 WIKIFILE="Latest.md"
-git clone "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" "${WIKIPATH}"
+# Forks may enable Wiki without creating the initial page/repository.
+if ! git clone "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" "${WIKIPATH}"; then
+    echo "::warning::Wiki is unavailable or inaccessible; skipping optional Wiki update. Create its first page and verify write access to enable updates."
+    exit 0
+fi
 
 echo "# Latest Autobuilds" > "${WIKIPATH}/${WIKIFILE}"
 for f in "${INPUTS}"/*.txt; do
