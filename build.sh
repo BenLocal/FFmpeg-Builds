@@ -51,6 +51,10 @@ cat <<EOF >"$BUILD_SCRIPT"
         --extra-ldflags="\$FF_LDFLAGS" --extra-ldsoflags='$RPATH_LDSOFLAGS' --extra-ldexeflags="\$FF_LDEXEFLAGS"'$RPATH_LDEXEFLAGS' \
         --cc="\$CC" --cxx="\$CXX" --ar="\$AR" --ranlib="\$RANLIB" --nm="\$NM" \
         --extra-version="\$(date +%Y%m%d)" || { cat ffbuild/config.log; exit 1; }
+    if [[ "$TARGET" == linuxarm64 && "$ADDINS_STR" == *-rk* ]]; then
+        grep -qx 'CONFIG_ALSA_INDEV=yes' ffbuild/config.mak
+        grep -qx 'CONFIG_ALSA_OUTDEV=yes' ffbuild/config.mak
+    fi
     make -j\$(nproc) V=1
     make install install-doc
 

@@ -51,6 +51,7 @@ ffbuild_depends() {
     echo lilv
     echo onevpl
     echo openal
+    echo alsa
     echo openapv
     echo opencore-amr
     echo openh264
